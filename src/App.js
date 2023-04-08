@@ -88,7 +88,7 @@ function App() {
             <label>
               Password <sup>*</sup>
             </label>
-            <input type="password" placeholder="Password" onChange={handlePassword} onFocus={() => setPassword({ ...password, isTouched: true })} value={password.value} />
+            <input type="password" placeholder="Password" onChange={handlePassword} onBlur={() => setPassword({ ...password, isTouched: true })} value={password.value} />
             {
               password.isTouched && password.value.length < 8 ? <PasswordErrorMessage /> : null
             }

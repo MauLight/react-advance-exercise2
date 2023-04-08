@@ -18,6 +18,17 @@ function App() {
   });
   const [role, setRole] = useState("role");
 
+  const handlePassword = (e) => {
+    console.log(e.target.value);
+    setPassword({
+      value: e.target.value, isTouched: true
+    })
+    if (password.value.length < 8) {
+      
+    }
+    console.log(password);
+  }
+
   const getIsFormValid = () => {
     // Implement this function
     return true;
@@ -31,6 +42,8 @@ function App() {
     alert("Account created!");
     clearForm();
   };
+
+
 
   return (
     <div className="App">
@@ -57,7 +70,10 @@ function App() {
             <label>
               Password <sup>*</sup>
             </label>
-            <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password} />
+            <input type="password" placeholder="Password" onChange={handlePassword} />
+            {
+             password.isTouched && password.value.length < 8 ? <PasswordErrorMessage /> : null
+            }
           </div>
           <div className="Field">
             <label>

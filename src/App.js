@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { validateEmail } from "./utils";
 
 const PasswordErrorMessage = () => {
@@ -21,29 +21,47 @@ function App() {
   const handlePassword = (e) => {
     console.log(e.target.value);
     setPassword({
-      value: e.target.value, isTouched: true
+      ...password, value: e.target.value
     })
     if (password.value.length < 8) {
-      
+
     }
     console.log(password);
   }
 
   const getIsFormValid = () => {
-    // Implement this function
-    return true;
+    console.log("Checking...")
+    if (firstName.length > 0 && validateEmail(email) && password.value.length > 8 && (role === "individual" || role === "business")) {
+      console.log("VALID!");
+      return true;
+    }
+    else {
+      console.log("INVALID!");
+      return false;
+    }
   };
 
   const clearForm = () => {
     // Implement this function
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPassword({
+      value: "",
+      isTouched: false,
+    });
+    setRole("role");
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     alert("Account created!");
     clearForm();
   };
 
-
+  useEffect(() => {
+    console.log(validateEmail(email));
+  })
 
   return (
     <div className="App">
@@ -70,22 +88,22 @@ function App() {
             <label>
               Password <sup>*</sup>
             </label>
-            <input type="password" placeholder="Password" onChange={handlePassword} />
+            <input type="password" placeholder="Password" onChange={handlePassword} onFocus={() => setPassword({ ...password, isTouched: true })} value={password.value} />
             {
-             password.isTouched && password.value.length < 8 ? <PasswordErrorMessage /> : null
+              password.isTouched && password.value.length < 8 ? <PasswordErrorMessage /> : null
             }
           </div>
           <div className="Field">
             <label>
               Role <sup>*</sup>
             </label>
-            <select>
+            <select onChange={(e) => setRole(e.target.value)}>
               <option value="role">Role</option>
               <option value="individual">Individual</option>
               <option value="business">Business</option>
             </select>
           </div>
-          <button type="submit" disabled={!getIsFormValid()}>
+          <button type="submit" disabled={!getIsFormValid()} onClick={handleSubmit}>
             Create account
           </button>
         </fieldset>
